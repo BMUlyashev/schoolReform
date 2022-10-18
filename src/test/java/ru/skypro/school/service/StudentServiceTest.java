@@ -99,6 +99,30 @@ public class StudentServiceTest {
     }
 
     @Test
+    public void findByAgeBetween() {
+        List<Student> students = List.of(
+                createStudent(1, "1", 18),
+                createStudent(3, "3", 19),
+                createStudent(5, "5", 20)
+        );
+
+        int minAge = 18;
+        int maxAge = 20;
+        int minAgeFail = 10;
+        int maxAgeFail = 13;
+
+        when(studentRepository.findByAgeBetween(any(), any()))
+                .thenReturn(students)
+                .thenReturn(Collections.emptyList());
+
+        assertThat(studentService.findByAgeBetween(minAge, maxAge))
+                .filteredOn(student -> student.getAge() >= minAge && student.getAge() <= maxAge)
+                .hasSize(3);
+        assertThat(studentService.findByAgeBetween(minAgeFail, maxAgeFail))
+                .hasSize(0);
+    }
+
+    @Test
     public void findByAge() {
         List<Student> students = List.of(
                 createStudent(1, "1", 18),

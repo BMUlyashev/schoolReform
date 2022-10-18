@@ -1,6 +1,7 @@
 package ru.skypro.school.entity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -12,6 +13,9 @@ public class Faculty {
     private Long id;
     private String name;
     private String color;
+
+    @OneToMany(mappedBy = "faculty")
+    private List<Student> students;
 
     public Long getId() {
         return id;

@@ -47,4 +47,10 @@ public class FacultyService {
                 .map(recordMapper::toRecord)
                 .collect(Collectors.toList());
     }
+
+    public Collection<FacultyRecord> findByFilterString(String filterString) {
+        return facultyRepository.findByNameLikeIgnoreCaseOrColorLikeIgnoreCase(filterString, filterString).stream()
+                .map(recordMapper::toRecord)
+                .collect(Collectors.toList());
+    }
 }

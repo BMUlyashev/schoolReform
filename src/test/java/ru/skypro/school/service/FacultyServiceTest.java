@@ -120,6 +120,41 @@ public class FacultyServiceTest {
                 .hasSize(0);
     }
 
+    @Test
+    public void getByFilterString() {
+        List<Faculty> facultiesEqualColor = List.of(
+                createFaculty(1, "1", "red"),
+                createFaculty(3, "3", "red")
+        );
+        List<Faculty> facultiesEqualName = List.of(
+                createFaculty(1, "1", "red"),
+                createFaculty(3, "1", "blue")
+        );
+
+        List<FacultyRecord> facultiesRecordEqualColor = List.of(
+                createFacultyRecord(1, "1", "red"),
+                createFacultyRecord(3, "3", "red")
+        );
+        List<FacultyRecord> facultiesRecordEqualName = List.of(
+                createFacultyRecord(1, "1", "red"),
+                createFacultyRecord(3, "1", "blue")
+        );
+
+        when(facultyRepository.findByNameLikeIgnoreCaseOrColorLikeIgnoreCase("red", "red"))
+                .thenReturn(facultiesEqualColor);
+
+
+        when(facultyRepository.findByNameLikeIgnoreCaseOrColorLikeIgnoreCase("1", "1"))
+                .thenReturn(facultiesEqualName);
+
+        assertThat(facultyService.findByFilterString("red"))
+                .hasSize(2)
+                .containsExactlyInAnyOrderElementsOf(facultiesRecordEqualColor);
+        assertThat(facultyService.findByFilterString("1"))
+                .hasSize(2)
+                .containsExactlyInAnyOrderElementsOf(facultiesRecordEqualName);
+    }
+
 
     private Faculty createFaculty(long id, String name, String color) {
         Faculty faculty = new Faculty();

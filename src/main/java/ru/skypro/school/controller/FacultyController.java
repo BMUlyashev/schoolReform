@@ -40,4 +40,9 @@ public class FacultyController {
     public Collection<FacultyRecord> findByColor(@RequestParam String color) {
         return facultyService.findByColor(color);
     }
+
+    @GetMapping(params = "filterString")
+    public Collection<FacultyRecord> findByFilterString(@RequestParam String filterString) {
+        return facultyService.findByFilterString(filterString);
+    }
 }

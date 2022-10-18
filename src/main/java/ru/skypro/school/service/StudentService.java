@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.skypro.school.component.RecordMapper;
 import ru.skypro.school.entity.Student;
 import ru.skypro.school.exception.StudentNotFoundException;
+import ru.skypro.school.record.FacultyRecord;
 import ru.skypro.school.record.StudentRecord;
 import ru.skypro.school.repository.StudentRepository;
 
@@ -48,5 +49,15 @@ public class StudentService {
         return studentRepository.findByAge(age).stream()
                 .map(recordMapper::toRecord)
                 .collect(Collectors.toList());
+    }
+
+    public Collection<StudentRecord> findByAgeBetween(Integer min, Integer max) {
+        return studentRepository.findByAgeBetween(min, max).stream()
+                .map(recordMapper::toRecord)
+                .collect(Collectors.toList());
+    }
+
+    public FacultyRecord findStudentFaculty(Long id) {
+        return read(id).getFacultyRecord();
     }
 }

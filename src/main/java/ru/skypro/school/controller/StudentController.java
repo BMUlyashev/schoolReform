@@ -2,6 +2,7 @@ package ru.skypro.school.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.skypro.school.record.FacultyRecord;
 import ru.skypro.school.record.StudentRecord;
 import ru.skypro.school.service.StudentService;
 
@@ -39,7 +40,17 @@ public class StudentController {
     }
 
     @GetMapping(params = "age")
-    public Collection<StudentRecord> findByAge(@RequestParam Integer age) {
+    public Collection<StudentRecord> findByAge(@RequestParam int age) {
         return studentService.findByAge(age);
+    }
+
+    @GetMapping(params = {"minAge", "maxAge"})
+    public Collection<StudentRecord> findByAgeBetween(@RequestParam int minAge, @RequestParam int maxAge) {
+        return studentService.findByAgeBetween(minAge, maxAge);
+    }
+
+    @GetMapping("/{id}/faculty")
+    public FacultyRecord findStudentFaculty(@PathVariable Long id) {
+        return studentService.findStudentFaculty(id);
     }
 }
