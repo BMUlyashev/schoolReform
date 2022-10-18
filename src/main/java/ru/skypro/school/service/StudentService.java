@@ -58,6 +58,7 @@ public class StudentService {
     }
 
     public FacultyRecord findStudentFaculty(Long id) {
-        return read(id).getFacultyRecord();
+        Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException(id));
+        return recordMapper.toRecord(student.getFaculty());
     }
 }

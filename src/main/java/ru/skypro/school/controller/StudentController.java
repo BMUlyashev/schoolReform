@@ -19,24 +19,24 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<StudentRecord> create(@RequestBody StudentRecord studentRecord) {
-        return ResponseEntity.ok(studentService.create(studentRecord));
+    public StudentRecord create(@RequestBody StudentRecord studentRecord) {
+        return studentService.create(studentRecord);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<StudentRecord> read(@PathVariable Long id) {
-        return ResponseEntity.ok(studentService.read(id));
+    public StudentRecord read(@PathVariable Long id) {
+        return studentService.read(id);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<StudentRecord> update(@PathVariable Long id,
+    public StudentRecord update(@PathVariable Long id,
                                                 @RequestBody StudentRecord studentRecord) {
-        return ResponseEntity.ok(studentService.update(id, studentRecord));
+        return studentService.update(id, studentRecord);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<StudentRecord> delete(@PathVariable Long id) {
-        return ResponseEntity.ok(studentService.delete(id));
+    public StudentRecord delete(@PathVariable Long id) {
+        return studentService.delete(id);
     }
 
     @GetMapping(params = "age")

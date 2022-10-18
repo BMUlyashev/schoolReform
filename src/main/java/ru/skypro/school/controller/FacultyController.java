@@ -2,6 +2,7 @@ package ru.skypro.school.controller;
 
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.school.record.FacultyRecord;
+import ru.skypro.school.record.StudentRecord;
 import ru.skypro.school.service.FacultyService;
 
 import java.util.Collection;
@@ -44,5 +45,10 @@ public class FacultyController {
     @GetMapping(params = "filterString")
     public Collection<FacultyRecord> findByFilterString(@RequestParam String filterString) {
         return facultyService.findByFilterString(filterString);
+    }
+
+    @GetMapping("/{id}/students")
+    public Collection<StudentRecord> getStudentsByFaculty(@PathVariable Long id) {
+        return facultyService.getStudentsByFaculty(id);
     }
 }

@@ -5,6 +5,7 @@ import ru.skypro.school.component.RecordMapper;
 import ru.skypro.school.entity.Faculty;
 import ru.skypro.school.exception.FacultyNotFoundException;
 import ru.skypro.school.record.FacultyRecord;
+import ru.skypro.school.record.StudentRecord;
 import ru.skypro.school.repository.FacultyRepository;
 
 import java.util.Collection;
@@ -52,5 +53,14 @@ public class FacultyService {
         return facultyRepository.findByNameLikeIgnoreCaseOrColorLikeIgnoreCase(filterString, filterString).stream()
                 .map(recordMapper::toRecord)
                 .collect(Collectors.toList());
+    }
+
+    public Collection<StudentRecord> getStudentsByFaculty(Long id) {
+        return facultyRepository.findById(id)
+                .map(Faculty::getStudents)
+                .map(s -> s.stream()
+                        .map(recordMapper::toRecord)
+                        .collect(Collectors.toList()))
+                .orElseThrow(() -> new FacultyNotFoundException(id));
     }
 }
