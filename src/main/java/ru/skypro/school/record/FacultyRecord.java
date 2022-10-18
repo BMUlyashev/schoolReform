@@ -37,11 +37,11 @@ public class FacultyRecord {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FacultyRecord that = (FacultyRecord) o;
-        return id == that.id;
+        return id == that.id && Objects.equals(name, that.name) && Objects.equals(color, that.color);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, name, color);
     }
 }
