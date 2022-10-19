@@ -15,10 +15,6 @@ public class RecordMapper {
         studentRecord.setName(student.getName());
         studentRecord.setAge(student.getAge());
 
-//        if (student.getFaculty() != null) {
-//            studentRecord.setFaculty(toRecord(student.getFaculty()));
-//        }
-
         return studentRecord;
     }
 
@@ -31,11 +27,11 @@ public class RecordMapper {
 
     public FacultyRecord toRecord(Faculty faculty) {
         FacultyRecord facultyRecord = new FacultyRecord();
-        if (faculty != null) {
-            facultyRecord.setId(faculty.getId());
-            facultyRecord.setName(faculty.getName());
-            facultyRecord.setColor(faculty.getColor());
-        }
+
+        facultyRecord.setId(faculty.getId());
+        facultyRecord.setName(faculty.getName());
+        facultyRecord.setColor(faculty.getColor());
+
         return facultyRecord;
     }
 

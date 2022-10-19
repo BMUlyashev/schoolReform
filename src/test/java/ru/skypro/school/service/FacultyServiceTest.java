@@ -8,8 +8,10 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.skypro.school.component.RecordMapper;
 import ru.skypro.school.entity.Faculty;
+import ru.skypro.school.entity.Student;
 import ru.skypro.school.exception.FacultyNotFoundException;
 import ru.skypro.school.record.FacultyRecord;
+import ru.skypro.school.record.StudentRecord;
 import ru.skypro.school.repository.FacultyRepository;
 
 import java.util.Collections;
@@ -155,6 +157,35 @@ public class FacultyServiceTest {
                 .containsExactlyInAnyOrderElementsOf(facultiesRecordEqualName);
     }
 
+    @Test
+    public void findStudent() {
+        Faculty faculty = createFaculty(1, "test", "color");
+        List<Student> students = List.of(
+                createStudent(1, "1", 18),
+                createStudent(3, "3", 19)
+        );
+
+        List<StudentRecord> studentsRecords = List.of(
+                createStudentRecord(1, "1", 18),
+                createStudentRecord(3, "3", 19)
+        );
+
+        faculty.setStudents(students);
+
+        when(facultyRepository.findById(1L)).thenReturn(Optional.of(faculty));
+
+        assertThat(facultyService.getStudentsByFaculty(1L))
+                .hasSize(2)
+                .containsExactlyInAnyOrderElementsOf(studentsRecords);
+    }
+
+    @Test
+    public void findStudentFacultyNotFound() {
+        when(facultyRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> facultyService.getStudentsByFaculty(1L)).isInstanceOf(FacultyNotFoundException.class);
+    }
+
 
     private Faculty createFaculty(long id, String name, String color) {
         Faculty faculty = new Faculty();
@@ -170,6 +201,22 @@ public class FacultyServiceTest {
         facultyRecord.setName(name);
         facultyRecord.setColor(color);
         return facultyRecord;
+    }
+
+    private Student createStudent(long id, String name, int age) {
+        Student student = new Student();
+        student.setId(id);
+        student.setName(name);
+        student.setAge(age);
+        return student;
+    }
+
+    private StudentRecord createStudentRecord(long id, String name, int age) {
+        StudentRecord studentRecord = new StudentRecord();
+        studentRecord.setId(id);
+        studentRecord.setName(name);
+        studentRecord.setAge(age);
+        return studentRecord;
     }
 
 }

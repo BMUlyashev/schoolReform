@@ -7,8 +7,11 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.skypro.school.component.RecordMapper;
+import ru.skypro.school.entity.Faculty;
 import ru.skypro.school.entity.Student;
+import ru.skypro.school.exception.StudentFacultyNotFoundException;
 import ru.skypro.school.exception.StudentNotFoundException;
+import ru.skypro.school.record.FacultyRecord;
 import ru.skypro.school.record.StudentRecord;
 import ru.skypro.school.repository.StudentRepository;
 
@@ -143,6 +146,37 @@ public class StudentServiceTest {
                 .hasSize(0);
     }
 
+    @Test
+    public void findFaculty() {
+        Faculty faculty = createFaculty(1, "1", "red");
+        Student student = createStudent(1, "test", 18);
+        FacultyRecord facultyRecord = createFacultyRecord(1, "1", "red");
+        student.setFaculty(faculty);
+
+        when(studentRepository.findById(any()))
+                .thenReturn(Optional.of(student));
+
+        assertThat(studentService.findStudentFaculty(1L)).isEqualTo(facultyRecord);
+    }
+
+    @Test
+    public void findFacultyStudentNotFound() {
+
+        when(studentRepository.findById(any()))
+                .thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> studentService.findStudentFaculty(1L)).isInstanceOf(StudentNotFoundException.class);
+    }
+
+    @Test
+    public void findFacultyStudentFacultyNotFound() {
+        Student student = createStudent(1, "test", 18);
+        when(studentRepository.findById(any()))
+                .thenReturn(Optional.of(student));
+
+        assertThatThrownBy(() -> studentService.findStudentFaculty(1L)).isInstanceOf(StudentFacultyNotFoundException.class);
+    }
+
     private Student createStudent(long id, String name, int age) {
         Student student = new Student();
         student.setId(id);
@@ -157,5 +191,21 @@ public class StudentServiceTest {
         studentRecord.setName(name);
         studentRecord.setAge(age);
         return studentRecord;
+    }
+
+    private Faculty createFaculty(long id, String name, String color) {
+        Faculty faculty = new Faculty();
+        faculty.setId(id);
+        faculty.setName(name);
+        faculty.setColor(color);
+        return faculty;
+    }
+
+    private FacultyRecord createFacultyRecord(long id, String name, String color) {
+        FacultyRecord facultyRecord = new FacultyRecord();
+        facultyRecord.setId(id);
+        facultyRecord.setName(name);
+        facultyRecord.setColor(color);
+        return facultyRecord;
     }
 }

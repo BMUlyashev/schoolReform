@@ -7,16 +7,6 @@ public class StudentRecord {
     private String name;
     private int age;
 
-    private FacultyRecord faculty;
-
-    public FacultyRecord getFaculty() {
-        return faculty;
-    }
-
-    public void setFaculty(FacultyRecord faculty) {
-        this.faculty = faculty;
-    }
-
 
     public Long getId() {
         return id;
