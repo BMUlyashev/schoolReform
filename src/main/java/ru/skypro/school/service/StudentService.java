@@ -2,12 +2,14 @@ package ru.skypro.school.service;
 
 import org.springframework.stereotype.Service;
 import ru.skypro.school.component.RecordMapper;
+import ru.skypro.school.entity.Faculty;
 import ru.skypro.school.entity.Student;
 import ru.skypro.school.exception.StudentNotFoundException;
 import ru.skypro.school.record.FacultyRecord;
 import ru.skypro.school.record.StudentRecord;
 import ru.skypro.school.repository.StudentRepository;
 
+import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -57,8 +59,9 @@ public class StudentService {
                 .collect(Collectors.toList());
     }
 
-    public FacultyRecord findStudentFaculty(Long id) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException(id));
-        return recordMapper.toRecord(student.getFaculty());
+    public Faculty findStudentFaculty(Long id) {
+        //Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException(id));
+        //return recordMapper.toRecord(student.getFaculty());
+        return studentRepository.findStudentFaculty(id);
     }
 }

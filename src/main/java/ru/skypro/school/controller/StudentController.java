@@ -2,6 +2,7 @@ package ru.skypro.school.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.skypro.school.entity.Faculty;
 import ru.skypro.school.record.FacultyRecord;
 import ru.skypro.school.record.StudentRecord;
 import ru.skypro.school.service.StudentService;
@@ -50,7 +51,12 @@ public class StudentController {
     }
 
     @GetMapping("/{id}/faculty")
-    public FacultyRecord findStudentFaculty(@PathVariable Long id) {
-        return studentService.findStudentFaculty(id);
+    public ResponseEntity<Faculty> findStudentFaculty(@PathVariable Long id) {
+        Faculty faculty = studentService.findStudentFaculty(id);
+        if (faculty == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(faculty);
+        //return studentService.findStudentFaculty(id);
     }
 }

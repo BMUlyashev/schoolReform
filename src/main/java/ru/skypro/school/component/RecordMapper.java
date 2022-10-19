@@ -31,9 +31,11 @@ public class RecordMapper {
 
     public FacultyRecord toRecord(Faculty faculty) {
         FacultyRecord facultyRecord = new FacultyRecord();
-        facultyRecord.setId(faculty.getId());
-        facultyRecord.setName(faculty.getName());
-        facultyRecord.setColor(faculty.getColor());
+        if (faculty != null) {
+            facultyRecord.setId(faculty.getId());
+            facultyRecord.setName(faculty.getName());
+            facultyRecord.setColor(faculty.getColor());
+        }
         return facultyRecord;
     }
 
