@@ -1,8 +1,11 @@
 package ru.skypro.school.component;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import ru.skypro.school.entity.Avatar;
 import ru.skypro.school.entity.Faculty;
 import ru.skypro.school.entity.Student;
+import ru.skypro.school.record.AvatarRecord;
 import ru.skypro.school.record.FacultyRecord;
 import ru.skypro.school.record.StudentRecord;
 
@@ -14,6 +17,14 @@ public class RecordMapper {
         studentRecord.setId(student.getId());
         studentRecord.setName(student.getName());
         studentRecord.setAge(student.getAge());
+
+        if (student.getFaculty() != null) {
+            studentRecord.setFacultyRecord(toRecord(student.getFaculty()));
+        }
+
+        if (student.getAvatar() != null) {
+            studentRecord.setAvatarRecord(toRecord(student.getAvatar()));
+        }
 
         return studentRecord;
     }
@@ -40,5 +51,13 @@ public class RecordMapper {
         faculty.setName(facultyRecord.getName());
         faculty.setColor(facultyRecord.getColor());
         return faculty;
+    }
+
+    public AvatarRecord toRecord(Avatar avatar) {
+        AvatarRecord avatarRecord = new AvatarRecord();
+        avatarRecord.setId(avatar.getId());
+        avatarRecord.setMediaType(avatar.getMediaType());
+        avatarRecord.setUrl("http://localhost:8080/avatars/" + avatar.getId() + "/from-db");
+        return avatarRecord;
     }
 }

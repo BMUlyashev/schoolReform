@@ -51,6 +51,15 @@ public class StudentController {
     @GetMapping("/{id}/faculty")
     public FacultyRecord findStudentFaculty(@PathVariable Long id) {
         return studentService.findStudentFaculty(id);
+    }
 
+    @PatchMapping("/{id}/faculty")
+    public StudentRecord updateFaculty(@PathVariable Long id, @RequestParam Long facultyId) {
+        return studentService.updateFaculty(id, facultyId);
+    }
+
+    @PatchMapping("/{id}/avatar")
+    public StudentRecord updateAvatar(@PathVariable Long id, @RequestParam Long avatarId) {
+        return studentService.updateAvatar(id, avatarId);
     }
 }

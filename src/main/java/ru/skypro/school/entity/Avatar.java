@@ -15,9 +15,6 @@ public class Avatar {
     private String mediaType;
     private byte[] data;
 
-    @OneToOne
-    private Student student;
-
     public long getId() {
         return id;
     }
@@ -58,13 +55,6 @@ public class Avatar {
         this.data = data;
     }
 
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
 
     @Override
     public boolean equals(Object o) {

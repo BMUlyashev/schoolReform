@@ -7,6 +7,25 @@ public class StudentRecord {
     private String name;
     private int age;
 
+    private FacultyRecord facultyRecord;
+
+    private AvatarRecord avatarRecord;
+
+    public AvatarRecord getAvatarRecord() {
+        return avatarRecord;
+    }
+
+    public void setAvatarRecord(AvatarRecord avatarRecord) {
+        this.avatarRecord = avatarRecord;
+    }
+
+    public FacultyRecord getFacultyRecord() {
+        return facultyRecord;
+    }
+
+    public void setFacultyRecord(FacultyRecord facultyRecord) {
+        this.facultyRecord = facultyRecord;
+    }
 
     public Long getId() {
         return id;

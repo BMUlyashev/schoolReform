@@ -2,11 +2,17 @@ package ru.skypro.school.service;
 
 import org.springframework.stereotype.Service;
 import ru.skypro.school.component.RecordMapper;
+import ru.skypro.school.entity.Avatar;
+import ru.skypro.school.entity.Faculty;
 import ru.skypro.school.entity.Student;
+import ru.skypro.school.exception.AvatarNotFoundException;
+import ru.skypro.school.exception.FacultyNotFoundException;
 import ru.skypro.school.exception.StudentFacultyNotFoundException;
 import ru.skypro.school.exception.StudentNotFoundException;
 import ru.skypro.school.record.FacultyRecord;
 import ru.skypro.school.record.StudentRecord;
+import ru.skypro.school.repository.AvatarRepository;
+import ru.skypro.school.repository.FacultyRepository;
 import ru.skypro.school.repository.StudentRepository;
 
 import java.util.Collection;
@@ -17,10 +23,15 @@ import java.util.stream.Collectors;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+
+    private final FacultyRepository facultyRepository;
+    private final AvatarRepository avatarRepository;
     private final RecordMapper recordMapper;
 
-    public StudentService(StudentRepository studentRepository, RecordMapper recordMapper) {
+    public StudentService(StudentRepository studentRepository, FacultyRepository facultyRepository, AvatarRepository avatarRepository, RecordMapper recordMapper) {
         this.studentRepository = studentRepository;
+        this.facultyRepository = facultyRepository;
+        this.avatarRepository = avatarRepository;
         this.recordMapper = recordMapper;
     }
 
@@ -62,5 +73,23 @@ public class StudentService {
         Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException(id));
         return recordMapper.toRecord(Optional.ofNullable(student.getFaculty())
                 .orElseThrow(() -> new StudentFacultyNotFoundException(id)));
+
+    }
+
+    public StudentRecord updateAvatar(Long id, Long avatarId) {
+        Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException(id));
+        Avatar avatar = avatarRepository.findById(avatarId).orElseThrow(() -> new AvatarNotFoundException(avatarId));
+
+        student.setAvatar(avatar);
+
+        return recordMapper.toRecord(studentRepository.save(student));
+    }
+
+    public StudentRecord updateFaculty(Long id, Long facultyId) {
+        Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException(id));
+        Faculty faculty = facultyRepository.findById(facultyId).orElseThrow(() -> new FacultyNotFoundException(facultyId));
+
+        student.setFaculty(faculty);
+        return recordMapper.toRecord(studentRepository.save(student));
     }
 }
