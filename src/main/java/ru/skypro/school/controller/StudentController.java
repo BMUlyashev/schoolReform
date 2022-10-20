@@ -3,6 +3,8 @@ package ru.skypro.school.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.school.record.FacultyRecord;
+import ru.skypro.school.record.StudentAverageAge;
+import ru.skypro.school.record.StudentQuantity;
 import ru.skypro.school.record.StudentRecord;
 import ru.skypro.school.service.StudentService;
 
@@ -65,12 +67,12 @@ public class StudentController {
     }
 
     @GetMapping("/quantity")
-    public ResponseEntity<Integer> getStudentQuantity() {
+    public ResponseEntity<StudentQuantity> getStudentQuantity() {
         return ResponseEntity.ok(studentService.getStudentQuantity());
     }
 
     @GetMapping("/age-average")
-    public ResponseEntity<Double> getStudentAverageAge() {
+    public ResponseEntity<StudentAverageAge> getStudentAverageAge() {
         return ResponseEntity.ok(studentService.getStudentAverageAge());
     }
 

@@ -13,9 +13,7 @@ import ru.skypro.school.entity.Faculty;
 import ru.skypro.school.entity.Student;
 import ru.skypro.school.exception.StudentFacultyNotFoundException;
 import ru.skypro.school.exception.StudentNotFoundException;
-import ru.skypro.school.record.AvatarRecord;
-import ru.skypro.school.record.FacultyRecord;
-import ru.skypro.school.record.StudentRecord;
+import ru.skypro.school.record.*;
 import ru.skypro.school.repository.AvatarRepository;
 import ru.skypro.school.repository.FacultyRepository;
 import ru.skypro.school.repository.StudentRepository;
@@ -225,7 +223,8 @@ public class StudentServiceTest {
     @Test
     public void getStudentQuantity() {
         int expected = 4;
-        when(studentRepository.getStudentQuantity()).thenReturn(4);
+        //StudentQuantity studentQuantity = () -> 4;
+        //when(studentRepository.getStudentQuantity()).thenReturn(studentQuantity);
 
         assertThat(studentService.getStudentQuantity()).isEqualTo(expected);
     }
@@ -233,7 +232,7 @@ public class StudentServiceTest {
     @Test
     public void getStudentAverageAge() {
         double expected = 10.5;
-        when(studentRepository.getStudentAverageAge()).thenReturn(10.5);
+        //when(studentRepository.getStudentAverageAge()).thenReturn(10.5);
 
         assertThat(studentService.getStudentAverageAge()).isEqualTo(expected);
     }

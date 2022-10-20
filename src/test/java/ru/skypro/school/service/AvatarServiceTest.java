@@ -4,13 +4,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.util.Pair;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.school.component.RecordMapper;
 import ru.skypro.school.entity.Avatar;
 import ru.skypro.school.exception.AvatarNotFoundException;
+import ru.skypro.school.record.AvatarRecord;
 import ru.skypro.school.repository.AvatarRepository;
 
 import java.io.File;
@@ -18,6 +25,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,6 +41,9 @@ public class AvatarServiceTest {
 
     @InjectMocks
     AvatarService avatarService;
+
+    @Spy
+    RecordMapper recordMapper;
 
     @Test
     public void upload() throws IOException {
@@ -93,11 +104,45 @@ public class AvatarServiceTest {
         assertThatThrownBy(() -> avatarService.readAvatarFromFs(1L)).isInstanceOf(AvatarNotFoundException.class);
     }
 
+    @Test
+    public void findAllByPage() {
+        List<Avatar> avatars = List.of(
+                createAvatar(1),
+                createAvatar(2)
+        );
+        List<AvatarRecord> avatarsRecords = List.of(
+                createAvatarRecord(1),
+                createAvatarRecord(2)
+        );
+        Page<Avatar> page = new PageImpl<>(avatars);
+        int size = 2;
+
+        when(avatarRepository.findAll(any(PageRequest.class))).thenReturn(page);
+
+        assertThat(avatarService.getAllAvatars(1, size)).hasSize(size)
+                .extracting(AvatarRecord::getId).contains(1L, 2L);
+    }
+
     private Avatar createAvatar(MultipartFile avatarFile) throws IOException {
         Avatar avatar = new Avatar();
         avatar.setMediaType(avatarFile.getContentType());
         avatar.setFileSize(avatarFile.getSize());
         avatar.setData(avatarFile.getBytes());
         return avatar;
+    }
+
+    private Avatar createAvatar(long id) {
+        Avatar avatar = new Avatar();
+        avatar.setId(id);
+        avatar.setMediaType(MediaType.MULTIPART_FORM_DATA_VALUE);
+        return avatar;
+    }
+
+    private AvatarRecord createAvatarRecord(long id) {
+        AvatarRecord avatarRecord = new AvatarRecord();
+        avatarRecord.setId(id);
+        avatarRecord.setMediaType(MediaType.MULTIPART_FORM_DATA_VALUE);
+        avatarRecord.setUrl("http://localhost:8080/avatars/" + id + "/from-db");
+        return avatarRecord;
     }
 }

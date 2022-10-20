@@ -6,9 +6,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.school.record.AvatarRecord;
 import ru.skypro.school.service.AvatarService;
 
 import java.io.IOException;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/avatars")
@@ -41,5 +43,11 @@ public class AvatarController {
                 .contentType(MediaType.parseMediaType(content.getFirst()))
                 .contentLength(content.getSecond().length)
                 .body(content.getSecond());
+    }
+
+    @GetMapping
+    public Collection<AvatarRecord> getAllAvatars(@RequestParam Integer page,
+                                                  @RequestParam Integer size) {
+        return avatarService.getAllAvatars(page, size);
     }
 }

@@ -10,6 +10,8 @@ import ru.skypro.school.exception.FacultyNotFoundException;
 import ru.skypro.school.exception.StudentFacultyNotFoundException;
 import ru.skypro.school.exception.StudentNotFoundException;
 import ru.skypro.school.record.FacultyRecord;
+import ru.skypro.school.record.StudentAverageAge;
+import ru.skypro.school.record.StudentQuantity;
 import ru.skypro.school.record.StudentRecord;
 import ru.skypro.school.repository.AvatarRepository;
 import ru.skypro.school.repository.FacultyRepository;
@@ -93,11 +95,11 @@ public class StudentService {
         return recordMapper.toRecord(studentRepository.save(student));
     }
 
-    public int getStudentQuantity() {
+    public StudentQuantity getStudentQuantity() {
         return studentRepository.getStudentQuantity();
     }
 
-    public Double getStudentAverageAge() {
+    public StudentAverageAge getStudentAverageAge() {
         return studentRepository.getStudentAverageAge();
     }
 
