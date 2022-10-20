@@ -45,8 +45,7 @@ public class AvatarService {
         avatar.setMediaType(avatarFile.getContentType());
         avatar.setFileSize(avatarFile.getSize());
         avatar.setData(avatarFile.getBytes());
-        avatarRepository.save(avatar);
-        return avatar;
+        return avatarRepository.save(avatar);
     }
 
     public Pair<String, byte[]> readAvatarFromDb(Long id) {
