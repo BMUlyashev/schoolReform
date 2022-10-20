@@ -53,7 +53,7 @@ public class AvatarServiceTest {
         avatarService.upload(multipartFile);
 
         File actualFile = new File("src/test/java/ru/skypro/school/testresource/1.gif");
-        File expectedFile = new File(imagePathNew + "/" + avatar.getId() + ".gif");
+        File expectedFile = new File("src/test/java/ru/skypro/school/testresource/test.gif");
 
         assertThat(actualFile).hasSameBinaryContentAs(expectedFile);
 
