@@ -92,4 +92,18 @@ public class StudentService {
         student.setFaculty(faculty);
         return recordMapper.toRecord(studentRepository.save(student));
     }
+
+    public int getStudentQuantity() {
+        return studentRepository.getStudentQuantity();
+    }
+
+    public Double getStudentAverageAge() {
+        return studentRepository.getStudentAverageAge();
+    }
+
+    public Collection<StudentRecord> getLastAddedStudents(Integer size) {
+        return studentRepository.getLastStudents(size).stream()
+                .map(recordMapper::toRecord)
+                .collect(Collectors.toList());
+    }
 }

@@ -222,6 +222,34 @@ public class StudentServiceTest {
         assertThat(studentService.updateFaculty(1L, 1L)).isEqualTo(studentRecord);
     }
 
+    @Test
+    public void getStudentQuantity() {
+        int expected = 4;
+        when(studentRepository.getStudentQuantity()).thenReturn(4);
+
+        assertThat(studentService.getStudentQuantity()).isEqualTo(expected);
+    }
+
+    @Test
+    public void getStudentAverageAge() {
+        double expected = 10.5;
+        when(studentRepository.getStudentAverageAge()).thenReturn(10.5);
+
+        assertThat(studentService.getStudentAverageAge()).isEqualTo(expected);
+    }
+
+    @Test
+    public void getLastStudents() {
+        List<Student> students = List.of(
+                createStudent(7, "1", 18),
+                createStudent(6, "3", 18)
+        );
+
+        when(studentRepository.getLastStudents(any())).thenReturn(students);
+
+        assertThat(studentService.getLastAddedStudents(2)).hasSize(2);
+    }
+
     private Student createStudent(long id, String name, int age) {
         Student student = new Student();
         student.setId(id);

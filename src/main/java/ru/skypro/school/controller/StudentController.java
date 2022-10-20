@@ -1,5 +1,6 @@
 package ru.skypro.school.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.school.record.FacultyRecord;
 import ru.skypro.school.record.StudentRecord;
@@ -61,5 +62,20 @@ public class StudentController {
     @PatchMapping("/{id}/avatar")
     public StudentRecord updateAvatar(@PathVariable Long id, @RequestParam Long avatarId) {
         return studentService.updateAvatar(id, avatarId);
+    }
+
+    @GetMapping("/quantity")
+    public ResponseEntity<Integer> getStudentQuantity() {
+        return ResponseEntity.ok(studentService.getStudentQuantity());
+    }
+
+    @GetMapping("/age-average")
+    public ResponseEntity<Double> getStudentAverageAge() {
+        return ResponseEntity.ok(studentService.getStudentAverageAge());
+    }
+
+    @GetMapping(params = "lastAddedSize")
+    public Collection<StudentRecord> getLastAddedStudents(@RequestParam Integer lastAddedSize) {
+        return studentService.getLastAddedStudents(lastAddedSize);
     }
 }
