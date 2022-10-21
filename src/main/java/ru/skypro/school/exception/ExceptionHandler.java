@@ -24,4 +24,10 @@ public class ExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(String.format("У студента с id = %d не найден факультет!", e.getId()));
     }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(AvatarNotFoundException.class)
+    public ResponseEntity<String> handleAvatarNotFoundException(AvatarNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(String.format("Аватар с id = %d не найден!", e.getId()));
+    }
 }

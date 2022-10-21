@@ -1,7 +1,10 @@
 package ru.skypro.school.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.school.record.FacultyRecord;
+import ru.skypro.school.record.StudentAverageAge;
+import ru.skypro.school.record.StudentQuantity;
 import ru.skypro.school.record.StudentRecord;
 import ru.skypro.school.service.StudentService;
 
@@ -51,6 +54,30 @@ public class StudentController {
     @GetMapping("/{id}/faculty")
     public FacultyRecord findStudentFaculty(@PathVariable Long id) {
         return studentService.findStudentFaculty(id);
+    }
 
+    @PatchMapping("/{id}/faculty")
+    public StudentRecord updateFaculty(@PathVariable Long id, @RequestParam Long facultyId) {
+        return studentService.updateFaculty(id, facultyId);
+    }
+
+    @PatchMapping("/{id}/avatar")
+    public StudentRecord updateAvatar(@PathVariable Long id, @RequestParam Long avatarId) {
+        return studentService.updateAvatar(id, avatarId);
+    }
+
+    @GetMapping("/quantity")
+    public ResponseEntity<StudentQuantity> getStudentQuantity() {
+        return ResponseEntity.ok(studentService.getStudentQuantity());
+    }
+
+    @GetMapping("/age-average")
+    public ResponseEntity<StudentAverageAge> getStudentAverageAge() {
+        return ResponseEntity.ok(studentService.getStudentAverageAge());
+    }
+
+    @GetMapping(params = "lastAddedSize")
+    public Collection<StudentRecord> getLastAddedStudents(@RequestParam Integer lastAddedSize) {
+        return studentService.getLastAddedStudents(lastAddedSize);
     }
 }

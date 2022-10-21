@@ -6,13 +6,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import ru.skypro.school.component.RecordMapper;
+import ru.skypro.school.entity.Avatar;
 import ru.skypro.school.entity.Faculty;
 import ru.skypro.school.entity.Student;
 import ru.skypro.school.exception.StudentFacultyNotFoundException;
 import ru.skypro.school.exception.StudentNotFoundException;
-import ru.skypro.school.record.FacultyRecord;
-import ru.skypro.school.record.StudentRecord;
+import ru.skypro.school.record.*;
+import ru.skypro.school.repository.AvatarRepository;
+import ru.skypro.school.repository.FacultyRepository;
 import ru.skypro.school.repository.StudentRepository;
 
 import java.util.Collections;
@@ -29,6 +32,12 @@ public class StudentServiceTest {
 
     @Mock
     StudentRepository studentRepository;
+
+    @Mock
+    FacultyRepository facultyRepository;
+
+    @Mock
+    AvatarRepository avatarRepository;
 
     @Spy
     RecordMapper recordMapper = new RecordMapper();
@@ -177,6 +186,69 @@ public class StudentServiceTest {
         assertThatThrownBy(() -> studentService.findStudentFaculty(1L)).isInstanceOf(StudentFacultyNotFoundException.class);
     }
 
+    @Test
+    public void updateAvatar() {
+        Avatar avatar = createAvatar(2, "home", 4);
+        Student student = createStudent(1, "test", 18);
+        StudentRecord studentRecord = createStudentRecord(1, "test", 18);
+        AvatarRecord avatarRecord = createAvatarRecord(2);
+
+        studentRecord.setAvatarRecord(avatarRecord);
+        student.setAvatar(avatar);
+
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
+        when(avatarRepository.findById(2L)).thenReturn(Optional.of(avatar));
+        when(studentRepository.save(any(Student.class))).thenReturn(student);
+
+        assertThat(studentService.updateAvatar(1L, 2L)).isEqualTo(studentRecord);
+    }
+
+    @Test
+    public void updateFaculty() {
+        Student student = createStudent(1, "test", 18);
+        Faculty faculty = createFaculty(1, "1", "red");
+        StudentRecord studentRecord = createStudentRecord(1, "test", 18);
+        FacultyRecord facultyRecord = createFacultyRecord(1, "1", "red");
+
+        student.setFaculty(faculty);
+        studentRecord.setFacultyRecord(facultyRecord);
+
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
+        when(facultyRepository.findById(1L)).thenReturn(Optional.of(faculty));
+        when(studentRepository.save(any(Student.class))).thenReturn(student);
+
+        assertThat(studentService.updateFaculty(1L, 1L)).isEqualTo(studentRecord);
+    }
+
+    @Test
+    public void getStudentQuantity() {
+        int expected = 4;
+        //StudentQuantity studentQuantity = () -> 4;
+        //when(studentRepository.getStudentQuantity()).thenReturn(studentQuantity);
+
+        assertThat(studentService.getStudentQuantity()).isEqualTo(expected);
+    }
+
+    @Test
+    public void getStudentAverageAge() {
+        double expected = 10.5;
+        //when(studentRepository.getStudentAverageAge()).thenReturn(10.5);
+
+        assertThat(studentService.getStudentAverageAge()).isEqualTo(expected);
+    }
+
+    @Test
+    public void getLastStudents() {
+        List<Student> students = List.of(
+                createStudent(7, "1", 18),
+                createStudent(6, "3", 18)
+        );
+
+        when(studentRepository.getLastStudents(any())).thenReturn(students);
+
+        assertThat(studentService.getLastAddedStudents(2)).hasSize(2);
+    }
+
     private Student createStudent(long id, String name, int age) {
         Student student = new Student();
         student.setId(id);
@@ -207,5 +279,23 @@ public class StudentServiceTest {
         facultyRecord.setName(name);
         facultyRecord.setColor(color);
         return facultyRecord;
+    }
+
+    private Avatar createAvatar(long id, String filePath, long fileSize) {
+        Avatar avatar = new Avatar();
+        avatar.setId(id);
+        avatar.setMediaType(MediaType.MULTIPART_FORM_DATA_VALUE);
+        avatar.setFilePath(filePath);
+        avatar.setFileSize(fileSize);
+        avatar.setData(new byte[]{0, 1, 2, 3});
+        return avatar;
+    }
+
+    private AvatarRecord createAvatarRecord(long id) {
+        AvatarRecord avatarRecord = new AvatarRecord();
+        avatarRecord.setId(id);
+        avatarRecord.setMediaType(MediaType.MULTIPART_FORM_DATA_VALUE);
+        avatarRecord.setUrl("http://localhost:8080/avatars/" + id + "/from-db");
+        return avatarRecord;
     }
 }
