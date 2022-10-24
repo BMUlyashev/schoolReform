@@ -222,17 +222,27 @@ public class StudentServiceTest {
 
     @Test
     public void getStudentQuantity() {
-        int expected = 4;
-        //StudentQuantity studentQuantity = () -> 4;
-        //when(studentRepository.getStudentQuantity()).thenReturn(studentQuantity);
+        StudentQuantity expected = new StudentQuantity() {
+            @Override
+            public int getStudentQuantity() {
+                return 4;
+            }
+        };
+
+        when(studentRepository.getStudentQuantity()).thenReturn(expected);
 
         assertThat(studentService.getStudentQuantity()).isEqualTo(expected);
     }
 
     @Test
     public void getStudentAverageAge() {
-        double expected = 10.5;
-        //when(studentRepository.getStudentAverageAge()).thenReturn(10.5);
+        StudentAverageAge expected = new StudentAverageAge() {
+            @Override
+            public double getStudentAverageAge() {
+                return 10.5;
+            }
+        };
+        when(studentRepository.getStudentAverageAge()).thenReturn(expected);
 
         assertThat(studentService.getStudentAverageAge()).isEqualTo(expected);
     }
