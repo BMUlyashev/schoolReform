@@ -1,6 +1,8 @@
 package ru.skypro.school.service;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.util.Pair;
@@ -22,6 +24,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class AvatarService {
+
+    Logger logger = LoggerFactory.getLogger(AvatarService.class);
 
     @Value("${path.to.avatars.folder}")
     private String avatarsFolder;
