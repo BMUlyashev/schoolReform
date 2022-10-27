@@ -42,47 +42,48 @@ public class StudentService {
     }
 
     public StudentRecord create(StudentRecord studentRecord) {
-        logger.info("Был вызван метод добавления студента");
+        logger.info("Was invoked method to create student");
         return recordMapper.toRecord(studentRepository.save(recordMapper.toEntity(studentRecord)));
     }
 
     public StudentRecord read(Long id) {
-        logger.info("Был вызван метод поиска студента по id");
+        logger.info("Was invoked method to find student by id");
         return recordMapper.toRecord(studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException(id)));
     }
 
     public StudentRecord update(Long id, StudentRecord studentRecord) {
-        logger.info("Был вызван метод обновления студента");
+        logger.info("Was invoked method to update student");
         Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException(id));
+        logger.debug("Was found {}", student);
         student.setName(studentRecord.getName());
         student.setAge(studentRecord.getAge());
-
+        logger.debug("New values for student: age = {}, name = {}", student.getAge(), student.getName());
         return recordMapper.toRecord(studentRepository.save(student));
     }
 
     public StudentRecord delete(Long id) {
-        logger.info("Был вызван метод удаления студента");
+        logger.info("Was invoked method to delete student");
         Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException(id));
         studentRepository.delete(student);
         return recordMapper.toRecord(student);
     }
 
     public Collection<StudentRecord> findByAge(Integer age) {
-        logger.info("Был вызван метод поиска студентов с возрастом =  {}", age);
+        logger.info("Was invoked method to find student with age =  {}", age);
         return studentRepository.findByAge(age).stream()
                 .map(recordMapper::toRecord)
                 .collect(Collectors.toList());
     }
 
     public Collection<StudentRecord> findByAgeBetween(Integer min, Integer max) {
-        logger.info("Был вызван метод поиска студентов с возрастом от {} до {}", min, max);
+        logger.info("Was invoked method to find students with age between ({}, {})", min, max);
         return studentRepository.findByAgeBetween(min, max).stream()
                 .map(recordMapper::toRecord)
                 .collect(Collectors.toList());
     }
 
     public FacultyRecord findStudentFaculty(Long id) {
-        logger.info("Был вызван метод поиска факультета у студента с id = {}", id);
+        logger.info("Was invoked method to find faculty of student с id = {}", id);
         Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException(id));
         return recordMapper.toRecord(Optional.ofNullable(student.getFaculty())
                 .orElseThrow(() -> new StudentFacultyNotFoundException(id)));
@@ -90,7 +91,7 @@ public class StudentService {
     }
 
     public StudentRecord updateAvatar(Long id, Long avatarId) {
-        logger.info("Был вызван метод установки аватарки студенту с id = {} ", id);
+        logger.info("Was invoked method to set avatar for student");
         Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException(id));
         Avatar avatar = avatarRepository.findById(avatarId).orElseThrow(() -> new AvatarNotFoundException(avatarId));
 
@@ -100,7 +101,7 @@ public class StudentService {
     }
 
     public StudentRecord updateFaculty(Long id, Long facultyId) {
-        logger.info("Был вызван метод установки факультета студенту с id = {} ", id);
+        logger.info("Was invoked method to set faculty for student");
         Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException(id));
         Faculty faculty = facultyRepository.findById(facultyId).orElseThrow(() -> new FacultyNotFoundException(facultyId));
 
@@ -109,17 +110,17 @@ public class StudentService {
     }
 
     public StudentQuantity getStudentQuantity() {
-        logger.info("Был вызван метод получения количества студентов");
+        logger.info("Was invoked method to get quantity students");
         return studentRepository.getStudentQuantity();
     }
 
     public StudentAverageAge getStudentAverageAge() {
-        logger.info("Был вызван метод получения среднего возраста студентов");
+        logger.info("Was invoked method to get average age of students");
         return studentRepository.getStudentAverageAge();
     }
 
     public Collection<StudentRecord> getLastAddedStudents(Integer size) {
-        logger.info("Был вызван метод получения списка студентов, добавленных последними");
+        logger.info("Was invoked method to get {} last added students", size);
         return studentRepository.getLastStudents(size).stream()
                 .map(recordMapper::toRecord)
                 .collect(Collectors.toList());

@@ -38,13 +38,14 @@ public class AvatarService {
     }
 
     public void upload(MultipartFile avatarFile) throws IOException {
+        logger.info("Was invoked method to upload avatar");
         Avatar avatar = createAvatar(avatarFile);
         String extension = Optional.ofNullable(avatarFile.getOriginalFilename())
                 .map(a -> a.substring(a.lastIndexOf(".")))
                 .orElse("");
 
         Path path = Paths.get(avatarsFolder).resolve(avatar.getId() + extension);
-
+        logger.debug("File path for avatar is {}", path.toString());
         Files.createDirectories(path.getParent());
         Files.write(path, avatar.getData());
         avatar.setFilePath(path.toString());
@@ -60,16 +61,19 @@ public class AvatarService {
     }
 
     public Pair<String, byte[]> readAvatarFromDb(Long id) {
+        logger.info("Was invoked method to get avatar from DB");
         Avatar avatar = avatarRepository.findById(id).orElseThrow(() -> new AvatarNotFoundException(id));
         return Pair.of(avatar.getMediaType(), avatar.getData());
     }
 
     public Pair<String, byte[]> readAvatarFromFs(Long id) throws IOException {
+        logger.info("Was invoked method to get avatar from filesystem");
         Avatar avatar = avatarRepository.findById(id).orElseThrow(() -> new AvatarNotFoundException(id));
         return Pair.of(avatar.getMediaType(), Files.readAllBytes(Paths.get(avatar.getFilePath())));
     }
 
     public Collection<AvatarRecord> getAllAvatars(Integer page, Integer size) {
+        logger.info("Was invoked method to get avatars");
         PageRequest pageRequest = PageRequest.of(page - 1, size);
         return avatarRepository.findAll(pageRequest).getContent().stream()
                 .map(recordMapper::toRecord)

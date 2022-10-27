@@ -13,28 +13,28 @@ public class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler(StudentNotFoundException.class)
     public ResponseEntity<String> handleStudentNotFoundException(StudentNotFoundException e) {
-        logger.error("Студент с id = {} не найден!", e.getId());
+        logger.error("Student with id = {} not found!", e.getId());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(String.format("Студент с id = %d не найден!", e.getId()));
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(FacultyNotFoundException.class)
     public ResponseEntity<String> handleFacultyNotFoundException(FacultyNotFoundException e) {
-        logger.error("Факультет с id = {} не найден!", e.getId());
+        logger.error("Faculty with id = {} not found!", e.getId());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(String.format("Факультет с id = %d не найден!", e.getId()));
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(StudentFacultyNotFoundException.class)
     public ResponseEntity<String> handleStudentFacultyNotFoundException(StudentFacultyNotFoundException e) {
-        logger.error("У студента с id = {} не найден факультет!", e.getId());
+        logger.error("Student with id = {} don't have faculty!", e.getId());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(String.format("У студента с id = %d не найден факультет!", e.getId()));
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(AvatarNotFoundException.class)
     public ResponseEntity<String> handleAvatarNotFoundException(AvatarNotFoundException e) {
-        logger.error("Аватар с id = {} не найден!", e.getId());
+        logger.error("Avatar with id = {} not found!", e.getId());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(String.format("Аватар с id = %d не найден!", e.getId()));
     }
