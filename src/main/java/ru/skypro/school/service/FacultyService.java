@@ -19,7 +19,7 @@ public class FacultyService {
     private final FacultyRepository facultyRepository;
     private final RecordMapper recordMapper;
 
-    Logger logger = LoggerFactory.getLogger(FacultyService.class);
+    private final Logger logger = LoggerFactory.getLogger(FacultyService.class);
 
 
     public FacultyService(FacultyRepository facultyRepository, RecordMapper recordMapper) {

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ExceptionHandler {
 
-    Logger logger = LoggerFactory.getLogger(ExceptionHandler.class);
+    private final Logger logger = LoggerFactory.getLogger(ExceptionHandler.class);
 
     @org.springframework.web.bind.annotation.ExceptionHandler(StudentNotFoundException.class)
     public ResponseEntity<String> handleStudentNotFoundException(StudentNotFoundException e) {
