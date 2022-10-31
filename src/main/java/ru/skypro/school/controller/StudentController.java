@@ -80,4 +80,9 @@ public class StudentController {
     public Collection<StudentRecord> getLastAddedStudents(@RequestParam Integer lastAddedSize) {
         return studentService.getLastAddedStudents(lastAddedSize);
     }
+
+    @GetMapping(params = "firstChar")
+    public Collection<String> getNamesStudentsStartWith(@RequestParam String firstChar) {
+        return studentService.getNamesStudentsStartWith(firstChar);
+    }
 }

@@ -20,6 +20,7 @@ import ru.skypro.school.repository.FacultyRepository;
 import ru.skypro.school.repository.StudentRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -123,6 +124,16 @@ public class StudentService {
         logger.info("Was invoked method to get {} last added students", size);
         return studentRepository.getLastStudents(size).stream()
                 .map(recordMapper::toRecord)
+                .collect(Collectors.toList());
+    }
+
+    public Collection<String> getNamesStudentsStartWith(String firstChar) {
+        logger.info("Was invoked method to get names of all students start with {}", firstChar);
+        List<Student> studentList = studentRepository.findAll();
+        return studentList.stream()
+                .filter(s -> s.getName().startsWith(firstChar))
+                .map(s -> s.getName().toUpperCase())
+                .sorted()
                 .collect(Collectors.toList());
     }
 }
