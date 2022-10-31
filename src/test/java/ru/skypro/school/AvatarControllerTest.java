@@ -13,6 +13,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.school.component.RecordMapper;
 import ru.skypro.school.controller.AvatarController;
 import ru.skypro.school.entity.Avatar;
 import ru.skypro.school.repository.AvatarRepository;
@@ -42,6 +43,9 @@ public class AvatarControllerTest {
 
     @SpyBean
     AvatarService avatarService;
+
+    @SpyBean
+    private RecordMapper recordMapper;
 
     @Test
     public void create() throws Exception {
