@@ -136,4 +136,13 @@ public class StudentService {
                 .sorted()
                 .collect(Collectors.toList());
     }
+
+    public Double getStudentAverageAgeFromStream() {
+        logger.info("Was invoked method to get average age of students with streams");
+        return studentRepository.findAll().stream()
+                .mapToDouble(Student::getAge)
+                .average()
+                .orElse(0);
+
+    }
 }

@@ -186,6 +186,19 @@ public class FacultyServiceTest {
         assertThatThrownBy(() -> facultyService.getStudentsByFaculty(1L)).isInstanceOf(FacultyNotFoundException.class);
     }
 
+    @Test
+    public void getFacultyLongestName() {
+        List<Faculty> faculties = List.of(
+                createFaculty(1, "3", "red"),
+                createFaculty(3, "12", "red"),
+                createFaculty(5, "5", "red")
+        );
+        when(facultyRepository.findAll()).thenReturn(faculties);
+        assertThat(facultyService.getFacultyLongestName())
+                .isEqualTo("12");
+
+    }
+
 
     private Faculty createFaculty(long id, String name, String color) {
         Faculty faculty = new Faculty();
