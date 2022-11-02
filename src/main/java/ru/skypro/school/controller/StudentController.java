@@ -90,4 +90,16 @@ public class StudentController {
     public ResponseEntity<Double> getStudentAverageAgeFromStream() {
         return ResponseEntity.ok(studentService.getStudentAverageAgeFromStream());
     }
+
+    @GetMapping("/start-step-1")
+    public ResponseEntity<Void> printStudentsInConsole() {
+        studentService.printStudentsInConsole();
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/start-step-2")
+    public ResponseEntity<Void> printStudentsInConsoleSync() {
+        studentService.printStudentsInConsoleSync();
+        return ResponseEntity.ok().build();
+    }
 }
