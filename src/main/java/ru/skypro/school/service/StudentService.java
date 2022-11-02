@@ -151,8 +151,8 @@ public class StudentService {
         System.out.println(studentList.get(0).getName());
         System.out.println(studentList.get(1).getName());
         new Thread(() -> {
-            System.out.println(studentList.get(1).getName());
             System.out.println(studentList.get(2).getName());
+            System.out.println(studentList.get(3).getName());
         }).start();
         new Thread(() -> {
             System.out.println(studentList.get(4).getName());
