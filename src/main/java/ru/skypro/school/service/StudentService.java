@@ -19,6 +19,7 @@ import ru.skypro.school.repository.AvatarRepository;
 import ru.skypro.school.repository.FacultyRepository;
 import ru.skypro.school.repository.StudentRepository;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -162,20 +163,17 @@ public class StudentService {
 
     public void printStudentsInConsoleSync() {
         List<Student> studentList = studentRepository.findAll();
-        printStudentName(studentList.get(0));
-        printStudentName(studentList.get(1));
+        printStudentsName(studentList.get(0), studentList.get(1));
         new Thread(() -> {
-            printStudentName(studentList.get(2));
-            printStudentName(studentList.get(3));
+            printStudentsName(studentList.get(2), studentList.get(3));
         }).start();
 
         new Thread(() -> {
-            printStudentName(studentList.get(4));
-            printStudentName(studentList.get(5));
+            printStudentsName(studentList.get(4), studentList.get(5));
         }).start();
     }
 
-    private synchronized void printStudentName(Student student) {
-        System.out.println(student.getName());
+    private synchronized void printStudentsName(Student... students) {
+        Arrays.stream(students).forEach(s -> System.out.println(s.getName()));
     }
 }
