@@ -11,6 +11,7 @@ import ru.skypro.school.record.StudentRecord;
 import ru.skypro.school.repository.FacultyRepository;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 @Service
@@ -75,5 +76,13 @@ public class FacultyService {
                         .map(recordMapper::toRecord)
                         .collect(Collectors.toList()))
                 .orElseThrow(() -> new FacultyNotFoundException(id));
+    }
+
+    public String getFacultyLongestName() {
+        logger.info("Was invoked method to find faculty with the longest name");
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparing(String::length))
+                .orElse("");
     }
 }

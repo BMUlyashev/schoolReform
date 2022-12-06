@@ -1,5 +1,6 @@
 package ru.skypro.school.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.school.record.FacultyRecord;
 import ru.skypro.school.record.StudentRecord;
@@ -50,5 +51,10 @@ public class FacultyController {
     @GetMapping("/{id}/students")
     public Collection<StudentRecord> getStudentsByFaculty(@PathVariable Long id) {
         return facultyService.getStudentsByFaculty(id);
+    }
+
+    @GetMapping("/longestName")
+    public ResponseEntity<String> getFacultyWithLongestName() {
+        return ResponseEntity.ok(facultyService.getFacultyLongestName());
     }
 }

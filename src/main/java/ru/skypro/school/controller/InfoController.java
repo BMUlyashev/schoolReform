@@ -18,4 +18,9 @@ public class InfoController {
     public Integer getPort() {
         return infoService.getPort();
     }
+
+    @GetMapping("/value")
+    public ResponseEntity<Integer> getValue() {
+        return ResponseEntity.ok(infoService.getValue());
+    }
 }

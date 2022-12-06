@@ -19,7 +19,9 @@ import ru.skypro.school.repository.AvatarRepository;
 import ru.skypro.school.repository.FacultyRepository;
 import ru.skypro.school.repository.StudentRepository;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -124,5 +126,54 @@ public class StudentService {
         return studentRepository.getLastStudents(size).stream()
                 .map(recordMapper::toRecord)
                 .collect(Collectors.toList());
+    }
+
+    public Collection<String> getNamesStudentsStartWith(String firstChar) {
+        logger.info("Was invoked method to get names of all students start with {}", firstChar);
+        List<Student> studentList = studentRepository.findAll();
+        return studentList.stream()
+                .filter(s -> s.getName().startsWith(firstChar))
+                .map(s -> s.getName().toUpperCase())
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public Double getStudentAverageAgeFromStream() {
+        logger.info("Was invoked method to get average age of students with streams");
+        return studentRepository.findAll().stream()
+                .mapToDouble(Student::getAge)
+                .average()
+                .orElse(0);
+
+    }
+
+    public void printStudentsInConsole() {
+        List<Student> studentList = studentRepository.findAll();
+        System.out.println(studentList.get(0).getName());
+        System.out.println(studentList.get(1).getName());
+        new Thread(() -> {
+            System.out.println(studentList.get(2).getName());
+            System.out.println(studentList.get(3).getName());
+        }).start();
+        new Thread(() -> {
+            System.out.println(studentList.get(4).getName());
+            System.out.println(studentList.get(5).getName());
+        }).start();
+    }
+
+    public void printStudentsInConsoleSync() {
+        List<Student> studentList = studentRepository.findAll();
+        printStudentsName(studentList.get(0), studentList.get(1));
+        new Thread(() -> {
+            printStudentsName(studentList.get(2), studentList.get(3));
+        }).start();
+
+        new Thread(() -> {
+            printStudentsName(studentList.get(4), studentList.get(5));
+        }).start();
+    }
+
+    private synchronized void printStudentsName(Student... students) {
+        Arrays.stream(students).forEach(s -> System.out.println(s.getName()));
     }
 }

@@ -80,4 +80,26 @@ public class StudentController {
     public Collection<StudentRecord> getLastAddedStudents(@RequestParam Integer lastAddedSize) {
         return studentService.getLastAddedStudents(lastAddedSize);
     }
+
+    @GetMapping(params = "firstChar")
+    public Collection<String> getNamesStudentsStartWith(@RequestParam String firstChar) {
+        return studentService.getNamesStudentsStartWith(firstChar);
+    }
+
+    @GetMapping("/age-average-stream")
+    public ResponseEntity<Double> getStudentAverageAgeFromStream() {
+        return ResponseEntity.ok(studentService.getStudentAverageAgeFromStream());
+    }
+
+    @GetMapping("/start-step-1")
+    public ResponseEntity<Void> printStudentsInConsole() {
+        studentService.printStudentsInConsole();
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/start-step-2")
+    public ResponseEntity<Void> printStudentsInConsoleSync() {
+        studentService.printStudentsInConsoleSync();
+        return ResponseEntity.ok().build();
+    }
 }

@@ -259,6 +259,40 @@ public class StudentServiceTest {
         assertThat(studentService.getLastAddedStudents(2)).hasSize(2);
     }
 
+    @Test
+    public void getNamesStudentsStartWith() {
+        List<Student> students = List.of(
+                createStudent(6, "Гермиона Грейнджер", 18),
+                createStudent(7, "Гарри Поттер", 18),
+                createStudent(8, "Драко Малфой", 18),
+                createStudent(9, "Маркус Флинт", 18)
+        );
+        List<String> expected = List.of("ГАРРИ ПОТТЕР", "ГЕРМИОНА ГРЕЙНДЖЕР");
+
+        when(studentRepository.findAll()).thenReturn(students);
+        assertThat(studentService.getNamesStudentsStartWith("Г"))
+                .hasSize(2)
+                .containsExactlyElementsOf(expected);
+
+    }
+
+    @Test
+    public void getStudentAverageAgeFromStream() {
+        List<Student> students = List.of(
+                createStudent(6, "Гермиона Грейнджер", 17),
+                createStudent(7, "Гарри Поттер", 18),
+                createStudent(8, "Драко Малфой", 19),
+                createStudent(9, "Маркус Флинт", 20)
+        );
+
+        double expected = 18.5;
+
+        when(studentRepository.findAll()).thenReturn(students);
+
+        assertThat(studentService.getStudentAverageAgeFromStream())
+                .isEqualTo(expected);
+    }
+
     private Student createStudent(long id, String name, int age) {
         Student student = new Student();
         student.setId(id);
